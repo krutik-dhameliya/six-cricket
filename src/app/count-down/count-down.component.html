@@ -1,0 +1,16 @@
+<div class="countdown-container">
+    <mat-card class="countdown-card">
+        <h2>Seconds left to deadline</h2>
+
+        <div class="progress-container">
+            <mat-progress-spinner [value]="progress" mode="determinate" color="{{ color }}">
+            </mat-progress-spinner>
+            <span class="countdown-number">{{ secondsLeft }}</span>
+        </div>
+
+        <p class="countdown-text">
+            <span>Total: {{ totalSeconds }}s</span> |
+            <span>Remaining: {{ secondsLeft }}s</span>
+        </p>
+    </mat-card>
+</div>
