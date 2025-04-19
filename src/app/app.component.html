@@ -1,5 +1,5 @@
-<button mat-raised-button color="primary" routerLink="/count-down">Go to Count Down</button>
-<button mat-raised-button color="warn" routerLink="/camera-checker">Go to Camera Checker</button>
+<button *ngIf="!isCameraPage" (click)="togglePage()" mat-raised-button color="primary" routerLink="/count-down">Go to Angular solution</button>
+<button *ngIf="isCameraPage" (click)="togglePage()" mat-raised-button color="warn" routerLink="/camera-checker">Go to General solution</button>
 
 <!-- This will display the routed component -->
 <router-outlet></router-outlet>

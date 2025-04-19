@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'six-cricket';
+  isCameraPage = false;
+
+  togglePage(): void {
+    this.isCameraPage = !this.isCameraPage;
+  }
 }

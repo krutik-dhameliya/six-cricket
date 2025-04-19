@@ -1,16 +1,21 @@
-<div class="countdown-container">
-    <mat-card class="countdown-card">
-        <h2>Seconds left to deadline</h2>
+<mat-card class="countdown-card">
+    <h1>1. Angular coding problem</h1>
+    <h2>Seconds left to deadline</h2>
 
-        <div class="progress-container">
-            <mat-progress-spinner [value]="progress" mode="determinate" color="{{ color }}">
-            </mat-progress-spinner>
-            <span class="countdown-number">{{ secondsLeft }}</span>
-        </div>
+    <div class="progress-container">
+        <mat-progress-spinner [value]="progress" mode="determinate" color="{{ color }}">
+        </mat-progress-spinner>
+        <span class="countdown-number">{{ secondsLeft }}</span>
+    </div>
 
-        <p class="countdown-text">
-            <span>Total: {{ totalSeconds }}s</span> |
-            <span>Remaining: {{ secondsLeft }}s</span>
-        </p>
-    </mat-card>
-</div>
+    <p class="countdown-text">
+        <span>Total: {{ totalSeconds }}s</span> |
+        <span>Remaining: {{ secondsLeft }}s</span>
+    </p>
+    <p class="countdown-text">
+        <span>Note: The remaining seconds are retrieved from a <a
+                href="https://67e7a5b620e3af747c3f239c.mockapi.io/api/seconds/secondsLeft" target="_blank"
+                rel="noopener noreferrer">mock API</a> endpoint and require an active internet connection to function
+            properly. In offline mode, this operation will fail due to the lack of network access.</span>
+    </p>
+</mat-card>

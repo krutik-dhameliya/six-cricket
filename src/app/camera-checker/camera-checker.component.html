@@ -1,74 +1,127 @@
 <mat-card>
-    <h2>Software Camera Configuration</h2>
+    <div class="camera-container">
+        <div class="section1 add-camera" *ngIf="viewAddCameraForm">
+            <h2>Add New Camera</h2>
+            <h4>Specify the camera’s working conditions so the system can automatically select it for the right
+                environment. Enter the name, the distance range it can focus on, and the range of lighting conditions it
+                works best
+                in.</h4>
+            <h4>💡 Light level is measured in lux, which indicates how bright or dark an environment is. For example, a
+                dim room might be around 50 lux, while bright sunlight can exceed 10,000 lux. This helps the system know
+                which camera to use depending on the lighting around the subject.</h4>
+            <div class="camera-form">
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Camera Name</mat-label>
+                    <input matInput type="text" [(ngModel)]="newCamera.name" />
+                </mat-form-field>
 
-    <div>
-        <mat-form-field appearance="outline">
-            <mat-label>Min Subject Distance</mat-label>
-            <input matInput type="number" [(ngModel)]="requiredDistance[0]" />
-        </mat-form-field>
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Minimum Subject Distance (m)</mat-label>
+                    <input matInput type="number" [(ngModel)]="newCamera.distanceRange[0]" />
+                </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Max Subject Distance</mat-label>
-            <input matInput type="number" [(ngModel)]="requiredDistance[1]" />
-        </mat-form-field>
-    </div>
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Maximum Subject Distance (m)</mat-label>
+                    <input matInput type="number" [(ngModel)]="newCamera.distanceRange[1]" />
+                </mat-form-field>
 
-    <div>
-        <mat-form-field appearance="outline">
-            <mat-label>Min Light Level</mat-label>
-            <input matInput type="number" [(ngModel)]="requiredLight[0]" />
-        </mat-form-field>
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Minimum Light Level (lux)</mat-label>
+                    <input matInput type="number" [(ngModel)]="newCamera.lightRange[0]" />
+                </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Max Light Level</mat-label>
-            <input matInput type="number" [(ngModel)]="requiredLight[1]" />
-        </mat-form-field>
-    </div>
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Maximum Light Level (lux)</mat-label>
+                    <input matInput type="number" [(ngModel)]="newCamera.lightRange[1]" />
+                </mat-form-field>
 
-    <h3>Hardware Cameras</h3>
-    <div *ngFor="let camera of cameras; let i = index">
+                <div class="form-actions">
+                    <button mat-raised-button color="primary" (click)="addCamera()">Add Camera</button>
+                    <button mat-raised-button color="warn" (click)="toggleContent()">Find Best Camera</button>
+                </div>
+            </div>
+        </div>
+        <div class="section1 find-best-camera" *ngIf="!viewAddCameraForm">
+            <h2>Find the Best Camera for Your Shot</h2>
+            <h4>Enter your software camera’s ideal settings to find the best matching hardware camera.</h4>
+            <h4>💡 Light level is measured in lux, which indicates how bright or dark an environment is. For example, a
+                dim room might be around 50 lux, while bright sunlight can exceed 10,000 lux. This helps the system know
+                which camera to use depending on the lighting around the subject.</h4>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Camera Name</mat-label>
-            <input matInput type="text" [(ngModel)]="camera.name" />
-        </mat-form-field>
+            <div class="form-row">
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Min Subject Distance (m)</mat-label>
+                    <input matInput type="number" [(ngModel)]="requiredDistance[0]" />
+                </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Min Distance</mat-label>
-            <input matInput type="number" [(ngModel)]="camera.distanceRange[0]" />
-        </mat-form-field>
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Max Subject Distance (m)</mat-label>
+                    <input matInput type="number" [(ngModel)]="requiredDistance[1]" />
+                </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Max Distance</mat-label>
-            <input matInput type="number" [(ngModel)]="camera.distanceRange[1]" />
-        </mat-form-field>
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Min Light Level (lux)</mat-label>
+                    <input matInput type="number" [(ngModel)]="requiredLight[0]" />
+                </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Min Light</mat-label>
-            <input matInput type="number" [(ngModel)]="camera.lightRange[0]" />
-        </mat-form-field>
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Max Light Level (lux)</mat-label>
+                    <input matInput type="number" [(ngModel)]="requiredLight[1]" />
+                </mat-form-field>
+            </div>
+            <div class="button-row">
+                <button mat-raised-button color="accent" (click)="checkCoverage()">Find Matching Cameras</button>
+                <button mat-raised-button color="warn" (click)="toggleContent()">Add New Camera</button>
+            </div>
+            <div class="camera-result" *ngIf="showResults">
+                <h3>Matching Cameras</h3>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Max Light</mat-label>
-            <input matInput type="number" [(ngModel)]="camera.lightRange[1]" />
-        </mat-form-field>
+                <!-- If cameras found -->
+                <ul *ngIf="sufficientCameras.length > 0; else noMatch">
+                    <li *ngFor="let camera of sufficientCameras">{{ camera }}</li>
+                </ul>
 
-        <button mat-icon-button color="warn" (click)="removeCamera(i)">
-            <mat-icon>delete</mat-icon>
-        </button>
-    </div>
+                <!-- If no cameras found -->
+                <ng-template #noMatch>
+                    <p class="no-match">No cameras match the specified requirements.</p>
+                </ng-template>
+            </div>
+        </div>
 
-    <button mat-raised-button color="primary" (click)="addCamera()">Add Camera</button>
-    <button mat-raised-button color="accent" (click)="checkCoverage()">Check Coverage</button>
 
-    <div *ngIf="sufficientCameras.length > 0">
-        <h3>Sufficient Coverage Provided By :</h3>
-        <ul>
-            <li *ngFor="let camera of sufficientCameras">{{ camera }}</li>
-        </ul>
-    </div>
 
-    <div *ngIf="sufficientCameras.length === 0">
-        <p>No combination of cameras fully covers the required range.</p>
+        <!-- Displaying List of Cameras -->
+        <div class="section2 existing-cameras">
+            <h2>Existing Cameras</h2>
+            <table mat-table [dataSource]="dataSource" class="camera-table">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Camera Name </th>
+                    <td mat-cell *matCellDef="let camera"> {{ camera.name }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="distanceRange">
+                    <th mat-header-cell *matHeaderCellDef> Distance Range (m) </th>
+                    <td mat-cell *matCellDef="let camera"> {{ camera.distanceRange[0] }} - {{ camera.distanceRange[1] }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="lightRange">
+                    <th mat-header-cell *matHeaderCellDef> Light Range (lux) </th>
+                    <td mat-cell *matCellDef="let camera"> {{ camera.lightRange[0] }} - {{ camera.lightRange[1] }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let camera; let i = index">
+                        <button mat-icon-button color="warn" (click)="removeCamera(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
     </div>
 </mat-card>

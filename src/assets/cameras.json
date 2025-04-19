@@ -1,0 +1,35 @@
+[
+    {
+        "name": "Camera 1",
+        "distanceRange": [
+            0.5,
+            5
+        ],
+        "lightRange": [
+            100,
+            1000
+        ]
+    },
+    {
+        "name": "Camera 2",
+        "distanceRange": [
+            1,
+            10
+        ],
+        "lightRange": [
+            200,
+            2000
+        ]
+    },
+    {
+        "name": "Camera 3",
+        "distanceRange": [
+            0.3,
+            10
+        ],
+        "lightRange": [
+            50,
+            2000
+        ]
+    }
+]

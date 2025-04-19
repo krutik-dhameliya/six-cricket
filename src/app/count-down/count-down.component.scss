@@ -1,13 +1,6 @@
-.countdown-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: radial-gradient(circle, #222, #111);
-}
-
 .countdown-card {
     text-align: center;
+    margin-top: 20px;
     padding: 20px;
     border-radius: 10px;
     background: #333;
@@ -38,4 +31,16 @@ mat-progress-spinner {
     margin-top: 10px;
     font-size: 1.2rem;
     color: #ddd;
+}
+
+.countdown-text a {
+    font-weight: bold;
+    color: #ff6600;
+    text-decoration: underline;
+}
+
+.countdown-text a:hover {
+    color: #cc5200;
+    text-decoration: none;
+    border-bottom: 2px solid #cc5200;
 }

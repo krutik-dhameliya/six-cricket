@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CameraCheckerService {
 
-  constructor() { }
+  private cameraDataUrl = 'assets/cameras.json';
+
+  constructor(private http: HttpClient) { }
+
+  getCameras(): Observable<any[]> {
+    return this.http.get<any[]>(this.cameraDataUrl);
+  }
 
   isCoverageSufficient(
     requiredDistance: [number, number],
