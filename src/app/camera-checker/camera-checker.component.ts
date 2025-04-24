@@ -17,7 +17,7 @@ export class CameraCheckerComponent implements OnInit {
   newCamera: { name: string; distanceRange: [number, number]; lightRange: [number, number] } = { name: '', distanceRange: [0, 0], lightRange: [0, 0] };
   displayedColumns: string[] = ['name', 'distanceRange', 'lightRange', 'actions'];
   dataSource = new MatTableDataSource(this.cameras);
-  sufficientCameras: string[] = [];
+  sufficientCameras: boolean;
 
   constructor(private cameraService: CameraCheckerService) {}
 
@@ -57,6 +57,5 @@ export class CameraCheckerComponent implements OnInit {
       this.cameras
     );
     this.showResults = true;
-    console.log(this.sufficientCameras);
   }
 }

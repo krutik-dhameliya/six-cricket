@@ -19,53 +19,44 @@ export class CameraCheckerService {
     requiredDistance: [number, number],
     requiredLight: [number, number],
     cameras: { name: string; distanceRange: [number, number]; lightRange: [number, number] }[]
-  ): string[] {
-    const mergedDistances = this.mergeIntervals(
-      cameras.map((c) => c.distanceRange)
-    );
-    const mergedLightLevels = this.mergeIntervals(
-      cameras.map((c) => c.lightRange)
-    );
+  ): boolean {
+    const distanceRanges = cameras.map(c => c.distanceRange);
+    const lightRanges = cameras.map(c => c.lightRange);
 
-    const isDistanceCovered = this.isRangeCovered(requiredDistance, mergedDistances);
-    const isLightCovered = this.isRangeCovered(requiredLight, mergedLightLevels);
+    const isDistanceCovered = this.isRangeFullyCovered(requiredDistance, distanceRanges);
+    const isLightCovered = this.isRangeFullyCovered(requiredLight, lightRanges);
 
-    if (!isDistanceCovered || !isLightCovered) return [];
-
-    return cameras
-      .filter((c) =>
-        this.isRangeCovered(requiredDistance, [c.distanceRange]) &&
-        this.isRangeCovered(requiredLight, [c.lightRange])
-      )
-      .map((c) => c.name);
+    return isDistanceCovered && isLightCovered;
   }
 
-  private mergeIntervals(intervals: [number, number][]): [number, number][] {
-    if (!intervals.length) return [];
+  isRangeFullyCovered(
+    required: [number, number],
+    ranges: [number, number][]
+  ): boolean {
+    const merged = this.mergeIntervals(ranges);
+    for (const [start, end] of merged) {
+      if (start <= required[0] && end >= required[1]) return true;
+    }
+    return false;
+  }
+
+  mergeIntervals(intervals: [number, number][]): [number, number][] {
+    if (intervals.length === 0) return [];
 
     intervals.sort((a, b) => a[0] - b[0]);
     const merged: [number, number][] = [intervals[0]];
 
     for (let i = 1; i < intervals.length; i++) {
+      const [currStart, currEnd] = intervals[i];
       const last = merged[merged.length - 1];
-      if (intervals[i][0] <= last[1]) {
-        last[1] = Math.max(last[1], intervals[i][1]);
+
+      if (currStart <= last[1]) {
+        last[1] = Math.max(last[1], currEnd);
       } else {
         merged.push(intervals[i]);
       }
     }
-    return merged;
-  }
 
-  private isRangeCovered(
-    required: [number, number],
-    merged: [number, number][]
-  ): boolean {
-    for (const [start, end] of merged) {
-      if (start <= required[0] && end >= required[1]) {
-        return true;
-      }
-    }
-    return false;
+    return merged;
   }
 }

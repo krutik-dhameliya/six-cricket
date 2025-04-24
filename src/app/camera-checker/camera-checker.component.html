@@ -77,8 +77,8 @@
                 <h3>Matching Cameras</h3>
 
                 <!-- If cameras found -->
-                <ul *ngIf="sufficientCameras.length > 0; else noMatch">
-                    <li *ngFor="let camera of sufficientCameras">{{ camera }}</li>
+                <ul *ngIf="sufficientCameras; else noMatch">
+                    <p class="no-match">Cameras match the specified requirements.</p>
                 </ul>
 
                 <!-- If no cameras found -->
